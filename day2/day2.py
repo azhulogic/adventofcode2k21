@@ -1,6 +1,6 @@
 # Alex Zhu
 # 12/12/21
-# Advent of Code - DAY ONE
+# Advent of Code - DAY TWO
 
 #Is this necessary? No, but it was fun
 MOVES = {
