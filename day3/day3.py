@@ -15,14 +15,13 @@ def to_bit_or_not_to_bit(lst):
     """Counts bits by position, returns list with each position containing the most common bit. O(l*n) where l is the bit length"""
     #sum up each position
     common_lst = [0] * len(lst[0])
-
     for bit_lst in lst:
         for idx in range(len(bit_lst)):
             common_lst[idx] += bit_lst[idx]
 
     #set each position to most common bit, kind of confusing
     #greater than or equal to half the total numbers => 1 is more common
-    half = len(lst)//2 + len(lst)%2
+    half = len(lst)//2 + len(lst)%2 #this has to be like this because I'm bad at coding
     for idx in range(len(common_lst)):
         common_lst[idx] = int(common_lst[idx] >= half)
     return common_lst
