@@ -9,7 +9,7 @@ class Bingo:
             self.row_lst = row_lst
 
         def __str__(self) -> str:
-            """For print(), has decent formatting if no more than two digits. O(n^2)"""
+            """For print(), has decent formatting if no more than two digits. O(1) technically?"""
             ret_str = ""
             for row in self.row_lst:
                 for el in row:
@@ -33,7 +33,8 @@ class Bingo:
             return self.row_lst[y][x]
 
         def find_elem(self,el) -> tuple[int, int]:
-            """Find if element exists on board, return its indexes or (-1,-1) if not found"""
+            """Find if element exists on board, return its indexes or (-1,-1) if not found. 
+            O(1), technically"""
             for y in range(len(self.row_lst)):
                 row = self.row_lst[y]
                 for x in range(len(row)):
@@ -42,9 +43,9 @@ class Bingo:
             return (-1,-1)
 
         def mark(self,elem) -> None:
-            """Basically just turns the specific element negative ("marks" it)"""
+            """Basically just turns the specific element negative ("marks" it). O(1)"""
             x,y = self.find_elem(elem)
-            if x+1:
+            if x != -1:
                 el = self.row_lst[y][x]
                 if el == 0:
                     #ugly special case with this method, but isn't pertinent later
@@ -55,7 +56,7 @@ class Bingo:
         def check_win(self) -> bool:
             """Checks if this board has a win. Technically runs O(1) with constant board size?
                 A better implementation might be possible with a helper function, but this works"""
-            #cases: 5 rows, 5 columns, 2 diagonals
+            #cases: 5 rows, 5 columns, no diagonals
             for idx in range(5):
                 for jdx in range(5):
                     #check rows
@@ -110,7 +111,7 @@ class Bingo:
         return ret_str
     
     def mark_boards(self,num) -> None:
-        """Marks boards with given num. O(n^2)"""
+        """Marks boards with given num. O(b) where b is amount of boards"""
         for board in self.boards:
             board.mark(num)
 
@@ -122,7 +123,7 @@ class Bingo:
         return None
 
     def play_bingo(self) -> int:
-        """Plays bingo, returns a winning board and the winning number. O(n^2)"""
+        """Plays bingo, returns a winning board and the winning number. O(nb) where b is amount of boards"""
         for x in self.nums:
             self.mark_boards(x)
             winner = self.is_winner()
