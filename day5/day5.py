@@ -5,6 +5,11 @@
 from PipeNetwork import PipeNetwork
 
 if __name__ == "__main__":
+    # p1 = PipeNetwork.Pipe("1,1 -> 3,3")
+    # p2 = PipeNetwork.Pipe("9,7 -> 7,9")
+    # print(p1.points_between45())
+    # print(p2.points_between45())
+
     print("[--EXAMPLE--]")
     exampleNetwork = PipeNetwork("example.txt")
     print(exampleNetwork)

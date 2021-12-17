@@ -43,9 +43,42 @@ class PipeNetwork:
                 points.append((xpos,ypos))
             return points
 
+        def points_between45(self):
+            """Does similar to function above, just for 45 degree case"""
+            #always go from left to right, otherwise going up or down
+            #find left-most point
+            if (self.x1 < self.x2):
+                xpos = self.x1
+                ypos = self.y1
+                xend = self.x2
+                yend = self.y2
+            else:
+                xpos = self.x2
+                ypos = self.y2
+                xend = self.x1
+                yend = self.y1
+
+            points = [(xpos,ypos)]
+            #increment up or down
+            if ypos < yend:
+                inc = 1
+            else:
+                inc = -1 
+
+            while (xpos != xend and ypos != yend):
+                #not sure if the and statement is necessary, more likely to break
+                xpos += 1
+                ypos += inc
+                points.append((xpos,ypos))
+            return points
+
         def is_straight(self) -> bool:
             """Returns true if the pipe is purely horizontal or vertical (not diagonal)"""
             return self.x1 == self.x2 or self.y1 == self.y2
+
+        def is_45(self) -> bool:
+            """Returns true if the pipe is exactly at 45 degrees."""
+            return abs(self.x1 - self.x2) == abs(self.y1 - self.y2)
 
     def __init__(self,file) -> None:
         """Takes file name to initialize PipeNetwork object"""
@@ -53,15 +86,13 @@ class PipeNetwork:
         self.network = []
         data = open(file,'r').readlines()
         for line in data:
-            #maybe update this eventually and implement diagonal pipes
             new_pipe = self.Pipe(line)
-            if new_pipe.is_straight():
+            if new_pipe.is_straight() or new_pipe.is_45():
                 self.pipes.append(self.Pipe(line))
         self.make_network()
         return
 
     def __str__(self) -> str:
-        #TODO: include grid print out
         ret_str = str(self.pipes)
         for row in self.network:
             str_ints = [str(int) for int in row]
@@ -94,7 +125,12 @@ class PipeNetwork:
         self.network = [[0]*(x+1) for n in range(y+1)] #create empty network grid
 
         for p in self.pipes:
-            points = p.points_between()
+            if p.is_straight():
+                points = p.points_between() #need to adjust
+            elif p.is_45():
+                points = p.points_between45()
+            else:
+                print("Shouldn't be here")
             for x,y in points:
                 self.network[y][x] += 1
         return
